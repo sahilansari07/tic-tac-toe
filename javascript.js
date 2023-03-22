@@ -7,6 +7,10 @@ header = document.querySelector("#header");
 window.onclick = el => {
     let str = el.target.id;
     let str1 = el.target.classList.value;
+    initialisationfunc(str, str1);
+}
+
+const initialisationfunc = (str, str1, i) => {
     if (str1 === "playbox") {
         let turn = turncounter();
         console.log(str1);
@@ -36,21 +40,37 @@ const updatefunc = (box, position, turn, header) => {
 const turnCreator = () => {
     let turn = 0;
     return () => {
-        if (turn < 9) {
+        let text = document.getElementById("header").innerHTML;
+        if (text !== "" || text !== "Have a nice day see hope to see you again") {
             turn++;
             return turn;
         }
     };
 };
+const Xscorekeeper = () => {
+    let X = 0;
+    return () => {
+        X++;
+        return X;
+    }
+};
+const Oscorekeeper = () => {
+    let O = 0;
+    return () => {
+        O++;
+        return O;
+    }
+};
+
 const turncounter = turnCreator();
+const xcounter = Xscorekeeper();
+const ocounter = Oscorekeeper();
 
 const winCheck = (myGame) => {
 
     Xwincount = document.getElementById("score2");
     Owincount = document.getElementById("score3");
-    let X = 0;
-    let O = 0;
-
+    
     let checkarrayX = ["X", "X", "X"];
     let checkarrayO = ["O", "O", "O"];
 
@@ -68,16 +88,15 @@ const winCheck = (myGame) => {
     for (let i = 0; i < 8; i++) {
         if (equalsCheck(checkarrayX, checkarraymain[i])) {
             alert("Player X WINS");
-            X++
-            Xwincount.innerHTML = ("Player X:" + X);
-           // restartfunc();
-
+            xcount = xcounter();
+            Xwincount.innerHTML = ("Player X:" + xcount);
+            restartfunc();
         }
         else if (equalsCheck(checkarrayO, checkarraymain[i])) {
             alert("Player O WINS");
-            O++
-            Owincount.innerHTML = ("Player O:" + O);
-            //restartfunc();
+            ocount = ocounter();
+            Owincount.innerHTML = ("Player O:" + ocount);
+            restartfunc();
         }
     }
 }
@@ -87,19 +106,25 @@ const equalsCheck = (a, b) => {
     return JSON.stringify(a) === JSON.stringify(b);
 }
 
-/*const restartfunc = () => {
+const restartfunc = () => {
     let text;
     let answer = prompt("Do you wanna play again");
     if (answer == null || answer == "" || answer == "No" || answer == "no") {
         text = "Have a nice day see hope to see you again";
+        box = document.querySelectorAll(".playbox");
+        myGame = [0, 0, 0, 0, 0, 0, 0, 0, 0]
+        for (let i = 0; i < 9; i++) {
+            box[i].innerHTML = "";
+        }
     }
     else {
         text = "Lets play more";
         box = document.querySelectorAll(".playbox");
         myGame = [0, 0, 0, 0, 0, 0, 0, 0, 0]
-        for(let i=0;i<9;i++){
-        box[i].innerHTML=0;
+        for (let i = 0; i < 9; i++) {
+            box[i].innerHTML = "";
         }
+        console.log(box);
     }
     document.getElementById("header").innerHTML = text;
-} */
+}
